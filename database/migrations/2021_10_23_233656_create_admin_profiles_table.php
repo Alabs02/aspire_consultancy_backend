@@ -16,10 +16,10 @@ class CreateAdminProfilesTable extends Migration
         Schema::create('admin_profiles', function (Blueprint $table) {
             $table->id();
             $table->foreignId('admin_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
-            $table->string('name');
+            $table->string('name')->nullable();
             $table->string('contact')->unique();
             $table->string('address')->nullable();
-            $table->json('services')->nullable();
+            $table->string('services')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
