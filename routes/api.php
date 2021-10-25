@@ -20,6 +20,7 @@ Route::group(['prefix' => 'v1', 'middleware' => ['json.response', 'cors']], func
 
             // Post Routes
             Route::post('/create-appointments', [UserManagement::class, 'createAppointment']);
+            Route::post('/logout', [UserAuthController::class, 'logout']);
         });
     });
 

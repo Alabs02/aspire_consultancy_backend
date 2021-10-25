@@ -25,12 +25,12 @@ class UserAuthController extends BaseController
             return $this->sendError('Error', $validator->errors(), 422);
         }
 
-        if (!Auth::attempt($request->only('email', 'password'))) {
-            return $this->sendError('Error', ['error' => 'Invalid login details'], 401);
-        }
+        // if (!Auth::attempt($request->only('email', 'password'))) {
+        //     return $this->sendError('Error', ['error' => 'Invalid login details'], 401);
+        // }
 
         $authUser = User::where('email', $request->email)->first();
-        if (Hash::check($request->password, $authUser->password)) {
+        if ($authUser && Hash::check($request->password, $authUser->password)) {
             $success['access_token'] = $authUser->createToken('AspireConsultancy_authToken')->plainTextToken;
             $success['user']  = $authUser;
             $success['token_type'] = 'Bearer';
@@ -38,7 +38,7 @@ class UserAuthController extends BaseController
 
             return $this->sendResponse($success, 'User signed in successfully', 200);
         } else {
-            return $this->sendError('Error', ['error' => 'User does not exists!'], 422);
+            return $this->sendError('Error', 'Invalid Login Credentials!', 422);
         }
     }
 

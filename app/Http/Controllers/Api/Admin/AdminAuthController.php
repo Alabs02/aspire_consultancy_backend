@@ -32,21 +32,21 @@ class AdminAuthController extends BaseController
         $auth = Auth::guard('admin');
 
         if ($auth instanceof \Illuminate\Contracts\Auth\StatefulGuard) {
-            if (!$auth->attempt($request->only('email', 'password'))) {
+            if ($auth->attempt($request->only('email', 'password'))) {
                 return $this->sendError('Error', 'Invalid login credentials', 401);
             }
         }
 
         $authAdmin = Admin::where('email', $request->email)->first();
-        if (Hash::check($request->password, $authAdmin->password)) {
+        if ($authAdmin && Hash::check($request->password, $authAdmin->password)) {
             $success['access_token'] = $authAdmin->createToken('AspireConsultancy_authToken')->plainTextToken;
             $success['admin']  = $authAdmin->profile;
             $success['token_type'] = 'Bearer';
-            $success['user_type'] = 'user';
+            $success['user_type'] = 'admin';
 
             return $this->sendResponse($success, 'Admin signed in successfully', 200);
         } else {
-            return $this->sendError('Error', ['error' => 'User does not exists!'], 422);
+            return $this->sendError('Error', 'Invalid Login Credentials', 422);
         }
     }
 
