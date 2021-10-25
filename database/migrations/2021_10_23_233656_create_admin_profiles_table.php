@@ -17,12 +17,11 @@ class CreateAdminProfilesTable extends Migration
             $table->id();
             $table->foreignId('admin_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
             $table->string('name');
-            $table->string('contact');
+            $table->string('contact')->unique();
             $table->string('address')->nullable();
             $table->json('services')->nullable();
             $table->timestamps();
             $table->softDeletes();
-            $table->unique(['contact', 'admin_id']);
         });
     }
 

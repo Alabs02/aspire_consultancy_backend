@@ -18,12 +18,11 @@ class CreateUserAppointmentsTable extends Migration
             $table->foreignId('user_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
             $table->string('subject');
             $table->string('company_name')->nullable();
-            $table->date('appointment_date');
-            $table->time('appointment_time');
+            $table->date('appointment_date')->unique();
+            $table->time('appointment_time')->unique();
             $table->boolean('is_accepted')->default(false);
             $table->timestamps();
             $table->softDeletes();
-            $table->unique(['appointment_date', 'appointment_time']);
         });
     }
 
